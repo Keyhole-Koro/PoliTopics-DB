@@ -23,6 +23,6 @@ jobs:
       - name: Deploy DynamoDB Stack
         run: |
           aws cloudformation deploy \
-            --template-file dynamodb-template.yaml \
+            --template-file template.yaml \
             --stack-name dynamodb-stack-stage \
             --capabilities CAPABILITY_NAMED_IAM
