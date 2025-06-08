@@ -1,0 +1,48 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  ArticlesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Articles
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: date
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: DateIndex
+          KeySchema:
+            - AttributeName: date
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  KeywordArticleIdsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: KeywordArticleIds
+      AttributeDefinitions:
+        - AttributeName: keyword
+          AttributeType: S
+      KeySchema:
+        - AttributeName: keyword
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  ParticipantArticleIdsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ParticipantArticleIds
+      AttributeDefinitions:
+        - AttributeName: participant
+          AttributeType: S
+      KeySchema:
+        - AttributeName: participant
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
