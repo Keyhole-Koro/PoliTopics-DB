@@ -46,3 +46,31 @@ Resources:
         - AttributeName: participant
           KeyType: HASH
       BillingMode: PAY_PER_REQUEST
+
+  ArticleApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ArticleApiFunction
+      Handler: src/index.lambdaHandler
+      Runtime: nodejs22.x
+      MemorySize: 128
+      Timeout: 10
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ArticlesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref KeywordArticleIdsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ParticipantArticleIdsTable
+      Environment:
+        Variables:
+          ARTICLE_TABLE_NAME: !Ref ArticlesTable
+          KEYWORD_TABLE_NAME: !Ref KeywordArticleIdsTable
+          PARTICIPANT_TABLE_NAME: !Ref ParticipantArticleIdsTable
+          DATE_INDEX: DateIndex
+      Events:
+        ArticlesApi:
+          Type: Api
+          Properties:
+            Path: /articles
+            Method: ANY
